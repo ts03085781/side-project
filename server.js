@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const ip = 'localhost'
+const ip = '10.41.4.244'
 const port = 8000
 
 //連接指定的MongoDB

@@ -47,11 +47,11 @@ const Blog = (props) => {
                 <title>測試集-串接API</title>
             </Head>
             <Layout>
-            <h1>My Blog</h1>
-                <p>{`the DB point is : ${props.show[0].point}`}</p>
-                <p>{`the DB name is : ${props.show[0].name}`}</p>
-                <p>{`the DB _id is : ${props.show[0]._id}`}</p>
-                <p>{`the DB __v is : ${props.show[0].__v}`}</p>
+            <h1>串接API DB資料庫提取測試</h1>
+                <p>{`測試人員 : ${props.show.name}`}</p>
+                <p>{`測試人員體重 : ${props.show.point}kg`}</p>
+                {/* <p>{`the DB _id is : ${props.show._id}`}</p>
+                <p>{`the DB __v is : ${props.show.__v}`}</p> */}
                 <button onClick={alerts} >click me</button>
             <ul>
                 {getPosts().map(post => (
@@ -69,9 +69,10 @@ const Blog = (props) => {
 }
 
 Blog.getInitialProps = async () => {
-    const res = await fetch('http://localhost:8000/api/get/riden');
+    const res = await fetch('http://10.41.4.244:8000/api/get/all');
     const json = await res.json();
-    return { show: json };
+    const randoms = Math.floor(Math.random()*json.length)
+    return { show: json[randoms] };
 }
 
 export default Blog
