@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const ip = '10.41.4.244'
+const ip = getIPAdress();
 const port = 8000
 
 //連接指定的MongoDB
@@ -15,6 +15,20 @@ const main = async () => {
     }
 };
 main();
+
+//取得本地當前ip位置的函式 
+function getIPAdress() { 
+    var interfaces = require('os').networkInterfaces();　　 
+    for (var devName in interfaces) {　　　　 
+        var iface = interfaces[devName];　　　　　　 
+        for (var i = 0; i < iface.length; i++) { 
+            var alias = iface[i]; 
+            if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) { 
+                return alias.address; 
+            } 
+        }　　 
+    } 
+} 
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
