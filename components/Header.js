@@ -3,6 +3,7 @@ import Link from 'next/link';
 const linkStyle = {
   marginRight: 15,
   fontFamily: 'Baloo Bhai',
+  textDecoration: 'none',
 };
 
 const Header = () => (
@@ -15,6 +16,9 @@ const Header = () => (
     </Link>
     <Link href="/game">
       <a style={linkStyle}>game</a>
+    </Link>
+    <Link href="/clickGame">
+      <a style={linkStyle}>clickGame</a>
     </Link>
   </div>
 );

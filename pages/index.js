@@ -25,33 +25,29 @@ function getIPAdress() {
     } 
 } 
 
-const PostLink = ({ post }) => (
-    <li>
-        <Link href="/p/[id]" as={`/p/${post.id}`}>
-            <a>{post.title}</a>
-        </Link>
-        <style jsx>{`
-            li {
-                list-style: none;
-                margin: 5px 0;
-            }
+// const PostLink = ({ post }) => (
+//     <li>
+//         <Link href="/p/[id]" as={`/p/${post.id}`}>
+//             <a>{post.title}</a>
+//         </Link>
+//         <style jsx>{`
+//             li {
+//                 list-style: none;
+//                 margin: 5px 0;
+//             }
 
-            a {
-                text-decoration: none;
-                color: green;
-                font-family: Baloo Bhai;
-            }
+//             a {
+//                 text-decoration: none;
+//                 color: green;
+//                 font-family: Baloo Bhai;
+//             }
 
-            a:hover {
-                opacity: 0.3;
-            }
-        `}</style>
-    </li>
-);
-
-const alerts = () => {
-    alert('安安請輸入文字')
-}
+//             a:hover {
+//                 opacity: 0.3;
+//             }
+//         `}</style>
+//     </li>
+// );
 
 const Blog = (props) => {
     return (
@@ -61,17 +57,14 @@ const Blog = (props) => {
                 <title>測試集-串接API</title>
             </Head>
             <Layout>
-            <h1>串接API DB資料庫提取測試</h1>
-                <p>{`測試人員 : ${props.show.name}`}</p>
-                <p>{`測試人員體重 : ${props.show.point}kg`}</p>
-                {/* <p>{`the DB _id is : ${props.show._id}`}</p>
-                <p>{`the DB __v is : ${props.show.__v}`}</p> */}
-                <button onClick={alerts} >click me</button>
-            <ul>
+            <h3>串接API DB資料庫提取測試</h3>
+            <p>{`測試人員 : ${props.show.name}`}</p>
+            <p>{`測試人員體重 : ${props.show.point}kg`}</p>
+            {/* <ul>
                 {getPosts().map(post => (
                     <PostLink key={post.id} post={post} />
                 ))}
-            </ul>
+            </ul> */}
             <style jsx>{`
                 *{
                     font-family: Baloo Bhai;
