@@ -11,6 +11,20 @@ function getPosts() {
     ];
 }
 
+//取得本地當前ip位置的函式 
+function getIPAdress() { 
+    var interfaces = require('os').networkInterfaces();　　 
+    for (var devName in interfaces) {　　　　 
+        var iface = interfaces[devName];　　　　　　 
+        for (var i = 0; i < iface.length; i++) { 
+            var alias = iface[i]; 
+            if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) { 
+                return alias.address; 
+            } 
+        }　　 
+    } 
+} 
+
 const PostLink = ({ post }) => (
     <li>
         <Link href="/p/[id]" as={`/p/${post.id}`}>
@@ -69,7 +83,8 @@ const Blog = (props) => {
 }
 
 Blog.getInitialProps = async () => {
-    const res = await fetch('http://10.41.4.244:8000/api/get/all');
+    const ip = getIPAdress();
+    const res = await fetch(`http://${ip}:8000/api/get/all`);
     const json = await res.json();
     const randoms = Math.floor(Math.random()*json.length)
     return { show: json[randoms] };
