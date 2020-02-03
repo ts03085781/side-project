@@ -41,7 +41,7 @@ app.use(function (req, res, next) {
 //建立DB數據模板
 const testDb = mongoose.model('user1',mongoose.Schema({name:String,point:Number}));
 //監聽80窗口
-app.listen(port,ip, ()=>{console.log('SERVER created');})
+app.listen(port,ip, ()=>{console.log(`SERVER created at ${ip}`);})
 //對所有請求解析其body
 app.use(bodyParser.json())
 
