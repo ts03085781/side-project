@@ -9,21 +9,25 @@ function ClickGame() {
     const [clickNumber, setClickNumber] = useState(0); //點擊次數
     const [time, setTime] = useState(3); //倒數時間毫秒
     const [scoreBoard, steScoreBoard] = useState(false); //記分板狀態 
+    const [hit, setHit] = useState(false) //按鈕滑鼠下壓
     const defaultScd = 3;
-    let scd = defaultScd
+
+    React.useEffect(()=>{
+        if(gameState){
+            MyCounter()
+        }
+    },[time])
     
     const MyCounter = () => {
-        if(scd>0){
+        if(time>0){
             setTimeout(() => {
-                setTime(scd-=1)
-                MyCounter()
+                setTime(time-1)
             }, 1000);
         }else{
             setGameState(false)
             steScoreBoard(true)
         }
     };
-
 
     const addNumber = () => {
         if(!gameState && !scoreBoard){
@@ -34,6 +38,14 @@ function ClickGame() {
 
         if(gameState && !scoreBoard){
             setClickNumber(clickNumber+1)
+        }
+    }
+
+    const hitTheButton = () =>{
+        if(!hit){
+            setHit(true)
+        }else{
+            setHit(false)
         }
     }
 
@@ -53,9 +65,9 @@ function ClickGame() {
             <h1>this page is clickGame</h1>
             <h1 className='Countdown_time'>{time===0? 'time out' : time}</h1>
             <div>
-                <button className="countingBtn" onClick={addNumber}>
+                <div className={`countingBtn ${hit && !scoreBoard ? 'hit' : ''}`} onClick={addNumber} onMouseDown={hitTheButton} onMouseUp={hitTheButton}>
                     <span>{clickNumber===0? 'start' : clickNumber}</span>
-                </button>
+                </div>
             </div>
             {scoreBoard ? 
                 <div>
@@ -81,7 +93,7 @@ function ClickGame() {
                     text-align: center;
                 }
                 .countingBtn{
-                    margin: auto;
+                    margin: 0px auto 0 auto;
                     font-size: 32px;
                     display:block;
                     text-align: center;
@@ -93,6 +105,14 @@ function ClickGame() {
                     background-color: rgb(238, 74, 74);
                     border-radius: 50%;
                     cursor: pointer;
+                }
+                .hit{
+                    margin-top: -25px;
+                    width: 150px;
+                    height: 150px;
+                    line-height: 150px;
+                    opacity: 0;
+                    transition: all 0.1s linear;
                 }
                 .rest_btn{
                     border: 1px solid rgb(255,255,255);
