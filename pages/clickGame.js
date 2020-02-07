@@ -4,8 +4,8 @@ import Head from 'next/head'
 import Layout from '../components/MyLayout';
 import React, { useState, useEffect } from 'react';
 
-function ClickGame() {
-    const[gameState, setGameState] = useState(false) //遊戲狀態
+const ClickGame = () => {
+    const [gameState, setGameState] = useState(false) //遊戲狀態
     const [clickNumber, setClickNumber] = useState(0); //點擊次數
     const [time, setTime] = useState(3); //倒數時間毫秒
     const [scoreBoard, steScoreBoard] = useState(false); //記分板狀態 

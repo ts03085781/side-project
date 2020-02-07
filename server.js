@@ -8,7 +8,6 @@ const port = 8000
 //連接指定的MongoDB
 const main = async () => {
     try{
-        
         await mongoose.connect('mongodb+srv://ts03085781:ts03085782@testdb-7kn7i.gcp.mongodb.net/userDB',{useNewUrlParser:true,useUnifiedTopology:true},()=>{console.log('db created')});
     }catch(err){
         console.log('DB link false!!', err)
@@ -62,7 +61,7 @@ app.delete('/api/delete/:name', async (req, res) =>{
 //刪除全部
 app.delete('/api/delete/all', async (req, res) =>{
     await testDb.remove({})
-    res.send(`name:${req.params.name} is deleted`)
+    res.send(`all deleted`)
 })
 //查詢全部name
 app.get('/api/get/all', async (req,res) =>{
@@ -72,5 +71,11 @@ app.get('/api/get/all', async (req,res) =>{
 //查詢單一name
 app.get('/api/get/:name', async (req,res) =>{
     const data = await testDb.find({name:req.params.name})
+    res.json(data)
+})
+//修改原有資料
+app.put('/api/update', async (req, res)=>{
+    console.log(req);
+    const data = await testDb.update({name:req.body.name},{$set:{point:req.body.point}})
     res.json(data)
 })
