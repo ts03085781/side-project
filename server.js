@@ -49,12 +49,19 @@ app.use(bodyParser.json())
 
 //增加 mongoDB 內的 document
 app.post('/api/post', async (req,res) =>{
-    const newData = new testDb({
-        name:req.body.name,
-        point:req.body.point,
-    });
-    const savedInfo = await newData.save();
-    res.json(savedInfo)
+    const checkData = await testDb.find({name:req.body.name})
+    if(checkData.length>0){
+        res.send(`重複資料!,資料庫內已存有"${req.body.name}"`)
+    }else{
+        const newData = new testDb({
+            name:req.body.name,
+            point:req.body.point,
+        });
+        await newData.save();
+        res.send(`已成功添加${req.body.name},${req.body.point}公斤`)
+    }
+
+
 })
 
 // 刪除指定name

@@ -46,13 +46,15 @@ const Blog = (props) => {
                 headers: {'content-type': 'application/json'},
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
             })
+            .then((res)=>{
+                return res.text()
+            })
             .then((resDate)=>{
                 setName('')
                 setWeight('')
                 domName.current.value='';
                 domWeight.current.value='';
-                alert(`已成功添加${name},${weight}公斤`)
-                console.log(resDate);
+                alert(resDate)
             })
             .catch(()=>{
                 console.log('API過程發生錯誤')
@@ -71,10 +73,12 @@ const Blog = (props) => {
             method: 'DELETE',
         })
         .then((resDate)=>{
+            return resDate.text()
+        })
+        .then((result) => {
             setDeleteName('')
             domDeleteName.current.value='';
-            alert(resDate)
-            console.log(resDate);
+            alert(result)
         })
         .catch(()=>{
             console.log('API過程發生錯誤')
@@ -122,16 +126,24 @@ const Blog = (props) => {
     const handleFindData = async () =>{
         if(findName){
             const encodeFindName = encodeURI(findName)
-            const res = await fetch(`http://${ip}:8000/api/get/${encodeFindName}`)
-            const json = await res.json();
-            if(json.length>0){
-                setFindName('')
-                setRandomName(json[0].name)
-                setRandomWeight(json[0].point)
-                domFindName.current.value='';
-            }else{
-                alert(`查無"${findName}"資料`)
-            }
+            fetch(`http://${ip}:8000/api/get/${encodeFindName}`)
+            .then((resDate)=>{
+                return resDate.json()
+            })
+            .then((result)=>{
+                if(result.length>0){
+                    setFindName('')
+                    setRandomName(result[0].name)
+                    setRandomWeight(result[0].point)
+                    domFindName.current.value='';
+                }else{
+                    alert(`查無"${findName}"資料`)
+                }
+            })
+            .catch(()=>{
+                console.log('API過程發生錯誤')
+            })
+
         }
     }
 
@@ -187,6 +199,7 @@ Blog.getInitialProps = async () => {
     const res = await fetch(`http://${ip}:8000/api/get/all`);
     const json = await res.json();
     const randoms = Math.floor(Math.random()*json.length)
+    console.log('我在這');
     return { show: json[randoms] };
 }
 
