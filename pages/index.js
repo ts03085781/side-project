@@ -7,16 +7,20 @@ import React, { useState, useEffect, useRef } from 'react';
 const ip = '10.41.4.244' //後端伺服器的浮動ip位置 
 
 const Blog = (props) => {
+    const [randomName, setRandomName] = useState(props.show.name)
+    const [randomWeight, setRandomWeight] = useState(props.show.point)
     const [name, setName] = useState()
     const [weight, setWeight] = useState()
     const [deleteName, setDeleteName] = useState()
     const [updateName, setUpdateName] = useState()
     const [updateWeight, setUpdateWeight] = useState()
+    const [findName, setFindName] = useState()
     const domName = useRef()
     const domWeight = useRef()
     const domDeleteName = useRef()
     const domUpdateName = useRef()
     const domUpdateWeight = useRef()
+    const domFindName = useRef()
 
     const handleName = (event) =>{
         setName(event.currentTarget.value)
@@ -85,6 +89,10 @@ const Blog = (props) => {
         setUpdateWeight(event.currentTarget.value)
     }
 
+    const handleFindName = (event) =>{
+        setFindName(event.currentTarget.value)
+    }
+
     const handleUpdateData = () =>{
         if(updateName && updateWeight){
             console.log('ininninin');
@@ -111,6 +119,22 @@ const Blog = (props) => {
         }
     }
 
+    const handleFindData = async () =>{
+        if(findName){
+            const encodeFindName = encodeURI(findName)
+            const res = await fetch(`http://${ip}:8000/api/get/${encodeFindName}`)
+            const json = await res.json();
+            if(json.length>0){
+                setFindName('')
+                setRandomName(json[0].name)
+                setRandomWeight(json[0].point)
+                domFindName.current.value='';
+            }else{
+                alert(`查無"${findName}"資料`)
+            }
+        }
+    }
+
     return (
         <div>
             <Head>
@@ -119,28 +143,39 @@ const Blog = (props) => {
             </Head>
             <Layout>
             <h3>串接API DB資料庫提取測試</h3>
-            <p>{`隨機測試人員 : ${props.show.name}`}</p>
-            <p>{`隨機測試人員體重 : ${props.show.point}kg`}</p>
+            <p>{`隨機測試人員 : ${randomName}`}</p>
+            <p>{`隨機測試人員體重 : ${randomWeight}kg`}</p>
             <div>
                 <span>新增名單</span>
-                <input placeholder="新增人名" type="text" onChange={(e)=>{handleName(e)}} ref={domName}/>
-                <input placeholder="新增體重" type="text" onChange={(e)=>{handleWeight(e)}} ref={domWeight}/>
-                <button onClick={handleAddNewData}>確認速出</button>
-            </div>
-            <div>
-                <span>刪除名單</span>
-                <input placeholder="刪除人名" type="text" onChange={(e)=>{handleDeleteName(e)}} ref={domDeleteName}/>
-                <button onClick={handleDeleteData}>確認速出</button>
+                <input className="inputBox" placeholder="新增人名" type="text" onChange={(e)=>{handleName(e)}} ref={domName}/>
+                <input className="inputBox" placeholder="新增體重" type="text" onChange={(e)=>{handleWeight(e)}} ref={domWeight}/>
+                <button className="submitBtn" onClick={handleAddNewData}>確認新增</button>
             </div>
             <div>
                 <span>修改名單</span>
-                <input placeholder="修改人名" type="text" onChange={(e)=>{handleUpdateName(e)}} ref={domUpdateName}/>
-                <input placeholder="修改體重" type="text" onChange={(e)=>{handleUpdateWeight(e)}} ref={domUpdateWeight}/>
-                <button onClick={handleUpdateData}>確認修改</button>
+                <input className="inputBox" placeholder="修改人名" type="text" onChange={(e)=>{handleUpdateName(e)}} ref={domUpdateName}/>
+                <input className="inputBox" placeholder="修改體重" type="text" onChange={(e)=>{handleUpdateWeight(e)}} ref={domUpdateWeight}/>
+                <button className="submitBtn" onClick={handleUpdateData}>確認修改</button>
+            </div>
+            <div>
+                <span>刪除名單</span>
+                <input className="inputBox" placeholder="刪除人名" type="text" onChange={(e)=>{handleDeleteName(e)}} ref={domDeleteName}/>
+                <button className="submitBtn" onClick={handleDeleteData}>確認刪除</button>
+            </div>
+            <div>
+                <span>查詢名單</span>
+                <input className="inputBox" placeholder="查詢人名" type="text" onChange={(e)=>{handleFindName(e)}} ref={domFindName}/>
+                <button className="submitBtn" onClick={handleFindData}>確認查詢</button>
             </div>
             <style jsx>{`
                 *{
-                    font-family: Baloo Bhai;
+                    font-family: Baloo Bhai, Microsoft JhengHei;
+                }
+                .inputBox{
+                    margin:0 5px 0 5px;
+                }
+                .submitBtn{
+                    margin:0 5px 0 5px;
                 }
             `}</style>
             </Layout>
