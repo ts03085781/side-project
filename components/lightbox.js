@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
 import Context from '../context/context'
-import '../context/context'
 
 const LightBox = () => {
 

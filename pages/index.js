@@ -99,7 +99,6 @@ const Blog = (props) => {
 
     const handleUpdateData = () =>{
         if(updateName && updateWeight){
-            console.log('ininninin');
             const bodyData = {
                 "name":updateName,
                 "point":updateWeight,
