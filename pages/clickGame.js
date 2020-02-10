@@ -2,7 +2,9 @@ import Header from '../components/Header';
 import Link from 'next/link';
 import Head from 'next/head'
 import Layout from '../components/MyLayout';
+import LightboxAddRank from '../components/lightboxAddRank';
 import React, { useState, useEffect } from 'react';
+import Context from '../context/clickGameContext';
 
 const ClickGame = () => {
     const [gameState, setGameState] = useState(false) //遊戲狀態
@@ -10,6 +12,7 @@ const ClickGame = () => {
     const [time, setTime] = useState(3); //倒數時間毫秒
     const [scoreBoard, steScoreBoard] = useState(false); //記分板狀態 
     const [hit, setHit] = useState(false) //按鈕滑鼠下壓
+    const [showLightBox, setShowLightBox] = useState(false) //按鈕滑鼠下壓
     const defaultScd = 3;
 
     React.useEffect(()=>{
@@ -55,7 +58,17 @@ const ClickGame = () => {
         steScoreBoard(false)
     }
 
+    const handleShowLightBox = () =>{
+        setShowLightBox(!showLightBox)
+    }
+
+    const contextValue = {
+        clickNumber:clickNumber,
+        handleShowLightBox:handleShowLightBox
+    };
+
     return (
+        <Context.Provider value={contextValue}>
         <div>
             <Head>
                 <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai" rel="stylesheet" />
@@ -72,12 +85,14 @@ const ClickGame = () => {
             {scoreBoard ? 
                 <div>
                     <p className="clickTimes">{`you click ${clickNumber} times a round`}</p> 
-                    <button className="rest_btn" onClick={reset}>reset</button> 
+                    <button className="rest_btn" onClick={reset}>reset</button>
+                    <button className="rest_btn" onClick={handleShowLightBox}>add to rank</button>
                 </div> 
             : 
                 null
             }
             </Layout>
+            { showLightBox? <LightboxAddRank/> : null }
             <style jsx>{`
                 *{
                     font-family: Baloo Bhai;
@@ -126,6 +141,7 @@ const ClickGame = () => {
                 }
             `}</style>
         </div>
+        </Context.Provider>
     );
 }
 export default ClickGame
