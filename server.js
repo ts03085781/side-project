@@ -95,11 +95,16 @@ app.put('/api/update', async (req, res)=>{
 
 //點擊遊戲rank加入名單
 app.post('/api/clickGame/post', async (req,res) =>{
-        const newGameData = new game_ranks({
-            name:req.body.name,
-            frequency:req.body.frequency,
-            comment:req.body.comment,
-        });
-        await newGameData.save();
-        res.send(`已成功加入rank排名公斤`)
+    const newGameData = new game_ranks({
+        name:req.body.name,
+        frequency:req.body.frequency,
+        comment:req.body.comment,
+    });
+    await newGameData.save();
+    res.send(`已成功加入rank排名公斤`)
+})
+
+app.get('/api/clickGame/get/all', async (req,res) =>{
+    const data = await game_ranks.find().sort({frequency:-1})
+    res.json(data)
 })

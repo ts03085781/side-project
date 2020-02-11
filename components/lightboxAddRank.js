@@ -32,31 +32,46 @@ const LightboxAddRank = () => {
             .then((resDate)=>{
                 setKeyName('')
                 keyComment('')
-                // domName.current.value='';
-                // domWeight.current.value='';
                 alert(resDate)
                 handleShowLightBox()
             })
             .catch(()=>{
                 console.log('add to rank API過程發生錯誤')
             })
+        }else{
+            alert('請輸入姓名及流言')
         }
+    }
+
+    const handleCancelBox = (handleShowLightBox) => {
+        handleShowLightBox()
     }
     return (
         <Context.Consumer>
         {value => (
             <div className='blackBackGround'>
                 <div className="inSideBox">
-                    <p>大俠貴名</p>
+                    <div>
+                        <span className="cancelBtn" onClick={()=>handleCancelBox(value.handleShowLightBox)}>X</span>
+                    </div>
+                    <div>大俠貴名</div>
                     <input type="text" onChange={(e)=>handleKeyName(e)}/>
-                    <p>嗆聲留言</p> 
+                    <div>嗆聲留言</div> 
                     <input type="text" onChange={(e)=>handleKeyComment(e)}/>
                     <button onClick={()=>addToRank(value.clickNumber,value.handleShowLightBox)} className='addToRankBtn'>add To Rank</button>
                 </div>
                 <style jsx>{`
                     *{
                         box-sizing: border-box;
-                        font-family: Baloo Bhai;
+                        font-family: Baloo Bhai, Microsoft JhengHei;
+                    }
+                    .cancelBtn{
+                        font-size:40px;
+                        position: absolute;
+                        top: -6px;
+                        right: 12px;
+                        color: rgb(238, 74, 74);
+
                     }
                     .blackBackGround{
                         position: fixed;
@@ -72,10 +87,10 @@ const LightboxAddRank = () => {
                         left: 50%;
                         background-color: #fff;
                         width: 360px;
-                        height: 220px;
+                        height: 260px;
                         margin-top: -110px;
                         margin-left: -180px;
-                        padding-top: 30px;
+                        padding-top: 18px;
                         border-radius: 20px;
                         font-size: 24px;
                         text-align: center;

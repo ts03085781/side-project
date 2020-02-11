@@ -72,7 +72,7 @@ const ClickGame = () => {
         <div>
             <Head>
                 <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai" rel="stylesheet" />
-                <title>測試集-關於頁面</title>
+                <title>測試集-點擊遊戲</title>
             </Head>
             <Layout>
             <h1>this page is clickGame</h1>
@@ -96,6 +96,11 @@ const ClickGame = () => {
             <style jsx>{`
                 *{
                     font-family: Baloo Bhai;
+                    -webkit-user-select: none;
+                    -moz-user-select:none;
+                    -o-user-select:none;
+                    -ms-user-select:none;
+                    text-align: center;
                 }
                 .Countdown_time{
                     text-align: center;

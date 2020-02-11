@@ -20,6 +20,9 @@ const Header = () => (
     <Link href="/clickGame">
       <a style={linkStyle}>clickGame</a>
     </Link>
+    <Link href="/rank">
+      <a style={linkStyle}>rank</a>
+    </Link>
   </div>
 );
 

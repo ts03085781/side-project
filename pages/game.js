@@ -85,6 +85,10 @@ const App = () => {
                     *{
                         box-sizing: border-box;
                         font-family: Baloo Bhai;
+                        -webkit-user-select: none;
+                        -moz-user-select:none;
+                        -o-user-select:none;
+                        -ms-user-select:none;
                     }
                     .App{
                         width: 270px;

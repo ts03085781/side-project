@@ -198,7 +198,6 @@ Blog.getInitialProps = async () => {
     const res = await fetch(`http://${ip}:8000/api/get/all`);
     const json = await res.json();
     const randoms = Math.floor(Math.random()*json.length)
-    console.log('我在這');
     return { show: json[randoms] };
 }
 
