@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import Head from 'next/head'
 import Layout from '../components/MyLayout';
@@ -18,10 +17,9 @@ const Rank = (props) => {
                 <h2>Rank page</h2>
                 {props.show.map((item, index)=>(
                     <div className="rankBar" key={item.name}>
-                        <span>{`rank ${index+1} : `}</span>
-                        <span>{`${item.name}`}</span>
-                        <span>{`  成績: ${item.frequency}`}</span>
-                        <span>{`  留言: ${item.comment}`}</span>
+                        <p className="cardText">{`Rank ${index+1} : ${item.name} `}</p>
+                        <p className="cardText">{`成績: ${item.frequency}`}</p>
+                        <p className="cardText">{`留言: ${item.comment}`}</p>
                     </div>
                 ))}
             </Layout>
@@ -36,9 +34,13 @@ const Rank = (props) => {
                 .rankBar{
                     background-color: #6495ed;
                     color: white;
-                    padding: 5px 27px;
+                    padding: 10px 27px;
                     border-radius: 22px;
-                    margin-bottom: 20px;
+                    max-width:400px;
+                    margin: 20px auto;
+                }
+                .cardText{
+                    margin: 0px;
                 }
             `}</style>
         </div>
