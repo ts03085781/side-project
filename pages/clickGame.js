@@ -15,7 +15,7 @@ const ClickGame = () => {
     const [showLightBox, setShowLightBox] = useState(false) //按鈕滑鼠下壓
     const defaultScd = 3;
 
-    React.useEffect(()=>{
+    useEffect(()=>{
         if(gameState){
             MyCounter()
         }
@@ -45,11 +45,7 @@ const ClickGame = () => {
     }
 
     const hitTheButton = () =>{
-        if(!hit){
-            setHit(true)
-        }else{
-            setHit(false)
-        }
+        hit ? setHit(false) : setHit(true)
     }
 
     const reset = () =>{
@@ -63,8 +59,8 @@ const ClickGame = () => {
     }
 
     const contextValue = {
-        clickNumber:clickNumber,
-        handleShowLightBox:handleShowLightBox
+        clickNumber,
+        handleShowLightBox
     };
 
     return (
