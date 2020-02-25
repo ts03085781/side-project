@@ -23,6 +23,9 @@ const Header = () => (
     <Link href="/rank">
       <a style={linkStyle}>rank</a>
     </Link>
+    <Link href="/chartRoom">
+      <a style={linkStyle}>chartRoom</a>
+    </Link>
   </div>
 );
 

@@ -108,3 +108,56 @@ app.get('/api/clickGame/get/all', async (req,res) =>{
     const data = await game_ranks.find().sort({frequency:-1})
     res.json(data)
 })
+
+
+
+//將 express 放進 http 中開啟 Server 的 3000 port ，正確開啟後會在 console 中印出訊息
+const server = require('http').Server(app).listen(5000,ip,()=>{console.log('open WS!')})
+//引入 io
+const socket = require('socket.io')
+//將啟動的 Server 送給 socket.io 處理
+const io = socket(server)
+
+//監聽 Server 連線後的所有事件，並捕捉事件 socket 執行
+io.on('connection', (socket) => {
+    //經過連線後在 console 中印出訊息
+    console.log('success connect at SERVER!')
+
+
+    //以下的 getMessage, getMessageAll, getMessageLess, addRoom 皆為自訂監聽 message 類型
+
+    //監聽透過 connection 傳進來的事件
+    socket.on('getMessage', message => {
+        //只回傳 message 給發送訊息的 Client
+        socket.emit('getMessage', message)
+    })
+
+    socket.on('getMessageAll', message => {
+        //回傳 message 給所有連結著的 client
+        io.sockets.emit('getMessageAll', message)
+    })
+
+    socket.on('getMessageLess', message => {
+        //回傳 message 給除了發送者外所有連結著的 client
+        socket.broadcast.emit('getMessageLess', message)
+    })
+
+    socket.on('addRoom', room => {
+        //加入前檢查是否已有所在房間
+        const nowRoom = Object.keys(socket.rooms).find(room =>{
+            return room !== socket.id
+        })
+
+        //有的話要先離開
+        if(nowRoom){
+            socket.leave(nowRoom)
+        }
+
+        //.join 為非同步,如確認要在 .join 執行完後做事,請以 callback function 的形式寫在第二參數 
+        socket.join(room,()=>{console.log(`有人已加入${room}號聊天室`,socket.rooms)})
+        //(1)發送給在同一個 room 中除了自己外的 Client
+        socket.to(room).emit(`addRoom', '已有新人加入${room}號聊天室！`)
+        //(2)發送給在 room 中所有的 Client
+        io.sockets.in(room).emit(`addRoom', '已加入${room}號聊天室！`)
+    })
+})
