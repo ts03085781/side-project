@@ -12,7 +12,8 @@ const ChartRoom = (props) => {
     const [ws,setWs] = useState(null)
     const [nowRoom,setNowRoom] = useState('total')
     const [nickName, setNickName]= useState('')
-    const textarea = useRef()
+    const [allMassage, setAllMassage] = useState('歡迎進入聊天室')
+    const prevAllMassageRef = useRef('')
 
     useEffect(() => {
         //開啟連線至 server 端的 WS 的監聽窗口
@@ -27,6 +28,10 @@ const ChartRoom = (props) => {
             initWebSocket()
         }
     },[ws])
+
+    useEffect(()=>{
+        prevAllMassageRef.current = allMassage
+    },[allMassage])
 
     const initWebSocket = () => {
         //對 getMessage 設定監聽，如果 server 有透過 getMessage 傳送訊息，將會在此被捕捉
@@ -49,17 +54,20 @@ const ChartRoom = (props) => {
         ws.on('roomTalk', message => {
             getMassage(message)
         })
+
+        ws.on('leaveRoom', message => {
+            getMassage(message)
+        })
+
+        // Server 通知完後再傳送 disConnection 通知關閉連線
+        ws.on('disConnection', () => {
+            ws.close()
+        })
     }
 
     const getMassage = (messages) =>{
-        console.log(textarea.current.value);
-        if(textarea.current.value){
-            console.log(1);
-            textarea.current.value = `${textarea.current.value}\n${messages}`
-        }else{
-            console.log(2);
-            textarea.current.value = `${messages}`
-        }
+            const msg = `${prevAllMassageRef.current}\n${messages}`
+            setAllMassage(msg)
     }
 
     //發送訊息
@@ -86,7 +94,7 @@ const ChartRoom = (props) => {
         let room = event.target.value
         setNowRoom(room)
         ws.emit('addRoom', room)
-        textarea.current.value =''
+
     }
 
     //input on change 時
@@ -106,6 +114,11 @@ const ChartRoom = (props) => {
         setNickName(event.currentTarget.value) 
     }
 
+    const disConnectWebSocket = () =>{
+        //向 Server 送出申請中斷的訊息，讓它通知其他 Client
+        ws.emit('disConnection', nickName )
+    }
+
     return (
         <div>
             <Head>
@@ -122,13 +135,14 @@ const ChartRoom = (props) => {
                         <option value='room3'>房間三</option>
                     </select>
                 </div>
-                <textarea ref={textarea} style={{width: "450px", height: "300px"}} readOnly={true}/>
+                <textarea className="textarea" readOnly={true} value={allMassage}/>
                 <div>
                     <input className="nickName" type="text" onChange={nickNameChange} value={nickName} placeholder="請輸入暱稱"/>
                     <input className="textInput" type="text" onChange={inputOnChange} onKeyDown={enterSubmit} value={inputText}/>
                     {/* <input className='sendBtn' type="button" value="發送訊息給自己" onClick={()=>sendMessage('getMessage')}/> */}
                     <input className='sendBtn' type="button" value="發送訊息" onClick={()=>sendMessage('getMessageAll')}/>
                     {/* <input className='sendBtn' type="button" value="發送訊息給除了自己以外的所有人" onClick={()=>sendMessage('getMessageLess')}/> */}
+                    <input type="button" value="斷開蓮線" onClick={disConnectWebSocket}/>
                 </div>
             </Layout>
 
@@ -140,8 +154,13 @@ const ChartRoom = (props) => {
                     -o-user-select:none;
                     -ms-user-select:none;
                 }
+                .textarea{
+                    width: 95%;
+                    height: 300px;
+                    margin: 10px 0 0 0;
+                }
                 .nickName{
-                    margin: 0 5px 0 0;
+                    margin: 0 5px;
                 }
                 .textInput{
                     margin: 0 5px;

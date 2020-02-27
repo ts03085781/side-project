@@ -141,7 +141,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('addRoom', room => {
-        console.log('SADR');
         //加入前檢查是否已有所在房間
         const nowRoom = Object.keys(socket.rooms).find(room =>{
             return room !== socket.id
@@ -165,5 +164,21 @@ io.on('connection', (socket) => {
             return room !== socket.id
         })
         io.sockets.in(socket.rooms[nowRoom]).emit('roomTalk', message)
+    })
+
+    //送出中斷申請時先觸發此事件
+    socket.on('disConnection', userId => {
+        const room = Object.keys(socket.rooms).find(room => {
+            return room !== socket.id
+        })
+        //先通知同一 room 的其他 Client
+        socket.to(room).emit('leaveRoom', `${userId} 已離開聊天！`)
+        //再送訊息讓 Client 做 .close()
+        socket.emit('disConnection', '')
+    })
+
+    //中斷後觸發此監聽
+    socket.on('disconnect', () => {
+        console.log('disconnection')
     })
 })
