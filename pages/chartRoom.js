@@ -4,6 +4,7 @@ import Layout from '../components/MyLayout';
 import fetch from 'isomorphic-unfetch'
 import React, { useState, useEffect, useRef } from 'react';
 import webSocket from 'socket.io-client';
+import '../scss/chartRoom.scss'
 
 const ip = '10.41.4.244' //後端伺服器的浮動ip位置 
 
@@ -150,30 +151,6 @@ const ChartRoom = (props) => {
                     <input type="button" value="斷開蓮線" onClick={disConnectWebSocket}/>
                 </div>
             </Layout>
-
-            <style jsx>{`
-                *{
-                    font-family: Baloo Bhai, Microsoft JhengHei;
-                    -webkit-user-select: none;
-                    -moz-user-select:none;
-                    -o-user-select:none;
-                    -ms-user-select:none;
-                }
-                .textarea{
-                    width: 95%;
-                    height: 300px;
-                    margin: 10px 0 0 0;
-                }
-                .nickName{
-                    margin: 0 5px;
-                }
-                .textInput{
-                    margin: 0 5px;
-                }
-                .sendBtn{
-                    margin: 0 5px;
-                }
-            `}</style>
         </div>
     );
 }
