@@ -9,65 +9,71 @@ const ip = '10.41.4.244' //後端伺服器的浮動ip位置
 
 const ChartRoom = (props) => {
     const [inputText, setInputText] = useState('')
-    const [ws,setWs] = useState(null)
     const [nowRoom,setNowRoom] = useState('total')
     const [nickName, setNickName]= useState('')
     const [allMassage, setAllMassage] = useState('歡迎進入聊天室')
     const prevAllMassageRef = useRef('')
+    const Ws = useRef(null)
 
     useEffect(() => {
         //開啟連線至 server 端的 WS 的監聽窗口
-        setWs(webSocket(`http://${ip}:5000`))
+        linkToWebSocket()
+        //模擬 componentWillUnMount , return 後的 function 將會在組件卸載時被自動呼叫
+        return disConnectWebSocket;
     }, [])
 
-    useEffect(()=>{
-        if(ws){
-            //連線成功在 console 中打印訊息
-            console.log('success connect!')
-            //設定監聽
-            initWebSocket()
-        }
-    },[ws])
-
+    //利用Ref紀錄上一次的 allMassage 狀態
     useEffect(()=>{
         prevAllMassageRef.current = allMassage
     },[allMassage])
 
+    const linkToWebSocket = async () => {
+        Ws.current = await webSocket(`http://${ip}:5000`); 
+        if(Ws.current){
+            //連線成功在 console 中打印訊息
+            console.log('success connect!')
+            //設定監聽
+            initWebSocket()
+            Ws.current.emit('addRoom', 'total')
+        }
+    }
+
     const initWebSocket = () => {
         //對 getMessage 設定監聽，如果 server 有透過 getMessage 傳送訊息，將會在此被捕捉
-        ws.on('getMessage', message => {
+        Ws.current.on('getMessage', message => {
             getMassage(message)
         })
 
-        ws.on('getMessageAll', message => {
+        Ws.current.on('getMessageAll', message => {
             getMassage(message)
         })
 
-        ws.on('getMessageLess', message => {
+        Ws.current.on('getMessageLess', message => {
             getMassage(message)
         })
 
-        ws.on('addRoom', message => {
+        Ws.current.on('addRoom', message => {
             getMassage(message)
         })
 
-        ws.on('roomTalk', message => {
+        Ws.current.on('roomTalk', message => {
             getMassage(message)
         })
 
-        ws.on('leaveRoom', message => {
+        Ws.current.on('leaveRoom', message => {
             getMassage(message)
         })
 
         // Server 通知完後再傳送 disConnection 通知關閉連線
-        ws.on('disConnection', () => {
-            ws.close()
+        Ws.current.on('disConnection', () => {
+            console.log('斷開Ws連線');
+            Ws.current.close()
         })
     }
 
     const getMassage = (messages) =>{
-            const msg = `${prevAllMassageRef.current}\n${messages}`
-            setAllMassage(msg)
+        const msg = `${prevAllMassageRef.current}\n${messages}`
+        setAllMassage(msg)
     }
 
     //發送訊息
@@ -77,11 +83,11 @@ const ChartRoom = (props) => {
             if(inputText && nowRoom === 'total'){
                 //以 emit 送訊息，並以 getMessage 為名稱送給 server 捕捉
                 const massages = `${nickName} :  ${inputText}`
-                ws.emit(typeOfWs, massages)
+                Ws.current.emit(typeOfWs, massages)
                 setInputText('')
             }else if(inputText && nowRoom !== 'total'){
                 const massages = `${nickName} :  ${inputText}`
-                ws.emit('roomTalk', massages)
+                Ws.current.emit('roomTalk', massages)
                 setInputText('')
             }
         }else{
@@ -93,8 +99,7 @@ const ChartRoom = (props) => {
     const changeRoom = (event) => {
         let room = event.target.value
         setNowRoom(room)
-        ws.emit('addRoom', room)
-
+        Ws.current.emit('addRoom', room)
     }
 
     //input on change 時
@@ -116,7 +121,7 @@ const ChartRoom = (props) => {
 
     const disConnectWebSocket = () =>{
         //向 Server 送出申請中斷的訊息，讓它通知其他 Client
-        ws.emit('disConnection', nickName )
+        Ws.current.emit('disConnection', nickName )
     }
 
     return (
@@ -172,11 +177,5 @@ const ChartRoom = (props) => {
         </div>
     );
 }
-
-// ChartRoom.getInitialProps = async () => {
-    // const res = await fetch(`http://${ip}:8000/api/clickGame/get/all`);
-    // const jsonData = await res.json();
-    // return { show: jsonData};
-// }
 
 export default ChartRoom
