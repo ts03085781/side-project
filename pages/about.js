@@ -2,6 +2,7 @@ import Header from '../components/Header';
 import Link from 'next/link';
 import Head from 'next/head'
 import Layout from '../components/MyLayout';
+import '../scss/about.scss'
 
 function About() {
     return (
@@ -13,11 +14,6 @@ function About() {
             <Layout>
                 <p>About page</p>
             </Layout>
-            <style jsx>{`
-                *{
-                    font-family: Baloo Bhai;
-                }
-            `}</style>
         </div>
     );
 }

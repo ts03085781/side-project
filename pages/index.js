@@ -3,6 +3,7 @@ import Link from 'next/link';
 import fetch from 'isomorphic-unfetch'
 import Head from 'next/head'
 import React, { useState, useEffect, useRef } from 'react';
+import '../scss/index.scss'
 
 const ip = '10.41.4.244' //後端伺服器的浮動ip位置 
 
@@ -178,17 +179,6 @@ const Blog = (props) => {
                 <input className="inputBox" placeholder="查詢人名" type="text" onChange={(e)=>{handleFindName(e)}} ref={domFindName}/>
                 <button className="submitBtn" onClick={handleFindData}>確認查詢</button>
             </div>
-            <style jsx>{`
-                *{
-                    font-family: Baloo Bhai, Microsoft JhengHei;
-                }
-                .inputBox{
-                    margin:0 5px 0 5px;
-                }
-                .submitBtn{
-                    margin:0 5px 0 5px;
-                }
-            `}</style>
             </Layout>
         </div>
     );

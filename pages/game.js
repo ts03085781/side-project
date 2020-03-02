@@ -3,6 +3,7 @@ import LightBox from '../components/lightbox';
 import Context from '../context/context'
 import Layout from '../components/MyLayout'
 import Head from 'next/head'
+import '../scss/game.scss'
 
 const App = () => {
     const [boxItem, setBoxItem] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -81,49 +82,6 @@ const App = () => {
                 {winner === 0 && <div className='player'>{`turn Player ${toSymbol(player)}`}</div>}
                 <button className='ResetButton' onClick={doReset}>Reset</button>
                 {winner !== 0 && <LightBox/>}
-                <style jsx>{`
-                    *{
-                        box-sizing: border-box;
-                        font-family: Baloo Bhai;
-                        -webkit-user-select: none;
-                        -moz-user-select:none;
-                        -o-user-select:none;
-                        -ms-user-select:none;
-                    }
-                    .App{
-                        width: 270px;
-                        height: 270px;
-                        margin: 40px auto;
-                        display: flex;
-                        flex-wrap: wrap;
-                    }
-                    .box{
-                        width: 33.3333%;
-                        height: 33.3333%;
-                        border: 2px solid rgb(100, 100, 100);
-                        text-align: center;
-                        line-height:100px;
-                        font-size: 100px;
-                    }
-                    .player{
-                        color: rgb(100, 100, 100);
-                        text-align: center;
-                        font-size: 36px;
-                        font-weight: 100;
-                        padding: 10px;
-                    }
-                    .ResetButton{
-                        border: 1px solid rgb(255, 255, 255);
-                        background-color: cornflowerblue;
-                        color: #fff;
-                        width: 150px;
-                        height: 40px;
-                        border-radius: 20px;
-                        margin: 20px calc(50% - 75px);
-                        font-size: 24px;
-                        letter-spacing: 2px;
-                    }
-                `}</style>
             </Layout>
         </Context.Provider>
     );

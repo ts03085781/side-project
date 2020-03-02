@@ -1,0 +1,50 @@
+*{
+    font-family: Baloo Bhai;
+    -webkit-user-select: none;
+    -moz-user-select:none;
+    -o-user-select:none;
+    -ms-user-select:none;
+    text-align: center;
+}
+.Countdown_time{
+    text-align: center;
+    font-size: 60px;
+    color: rgb(76, 175, 80);
+    margin:0;
+    line-height: 100px;
+}
+.clickTimes{
+    text-align: center;
+}
+.countingBtn{
+    margin: 0px auto 0 auto;
+    font-size: 32px;
+    display:block;
+    text-align: center;
+    line-height: 100px;
+    color: #fff;
+    border: none;
+    width: 100px;
+    height: 100px;
+    background-color: rgb(238, 74, 74);
+    border-radius: 50%;
+    cursor: pointer;
+}
+.hit{
+    margin-top: -25px;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    opacity: 0;
+    transition: all 0.1s linear;
+}
+.rest_btn{
+    border: 1px solid rgb(255,255,255);
+    background-color: cornflowerblue;
+    color: #fff;
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 20px calc(50% - 75px);
+    font-size: 24px;
+}

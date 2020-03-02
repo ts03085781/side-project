@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Layout from '../components/MyLayout';
 import fetch from 'isomorphic-unfetch'
 import React, { useState, useEffect, useRef } from 'react';
+import '../scss/rank.scss'
 
 const ip = '10.41.4.244' //後端伺服器的浮動ip位置 
 
@@ -23,26 +24,6 @@ const Rank = (props) => {
                     </div>
                 ))}
             </Layout>
-            <style jsx>{`
-                *{
-                    font-family: Baloo Bhai, Microsoft JhengHei;
-                    -webkit-user-select: none;
-                    -moz-user-select:none;
-                    -o-user-select:none;
-                    -ms-user-select:none;
-                }
-                .rankBar{
-                    background-color: #6495ed;
-                    color: white;
-                    padding: 10px 27px;
-                    border-radius: 22px;
-                    max-width:400px;
-                    margin: 20px auto;
-                }
-                .cardText{
-                    margin: 0px;
-                }
-            `}</style>
         </div>
     );
 }
