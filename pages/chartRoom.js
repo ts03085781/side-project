@@ -5,7 +5,7 @@ import fetch from 'isomorphic-unfetch'
 import React, { useState, useEffect, useRef } from 'react';
 import ChartRoomNameCheck from '../components/chartRoomNameCheck';
 import webSocket from 'socket.io-client';
-import '../scss/chartRoom.scss'
+import '../scss/chartRoom.scss';
 
 const ip = '10.41.4.244' //後端伺服器的浮動ip位置 
 
@@ -88,19 +88,15 @@ const ChartRoom = (props) => {
     //發送訊息
     const sendMessage = (typeOfWs) => {
         //判斷是否屬於任一房間內的發送訊息
-        if(nickName !== ''){
-            if(inputText && nowRoom === 'total'){
-                //以 emit 送訊息，並以 getMessage 為名稱送給 server 捕捉
-                const massages = `${nickName} :  ${inputText}`
-                Ws.current.emit(typeOfWs, massages)
-                setInputText('')
-            }else if(inputText && nowRoom !== 'total'){
-                const massages = `${nickName} :  ${inputText}`
-                Ws.current.emit('roomTalk', massages)
-                setInputText('')
-            }
-        }else{
-            alert('請輸入暱稱')
+        if(inputText && nowRoom === 'total'){
+            //以 emit 送訊息，並以 getMessage 為名稱送給 server 捕捉
+            const massages = `${nickName} :  ${inputText}`
+            Ws.current.emit(typeOfWs, massages)
+            setInputText('')
+        }else if(inputText && nowRoom !== 'total'){
+            const massages = `${nickName} :  ${inputText}`
+            Ws.current.emit('roomTalk', massages)
+            setInputText('')
         }
     }
 
@@ -118,7 +114,7 @@ const ChartRoom = (props) => {
 
     //當按下 Enter 時
     const enterSubmit = (e) => {
-        if (e.keyCode === 13) {
+        if (e.keyCode === 13 && inputText) {
             sendMessage('getMessageAll')
         }
     }
@@ -150,12 +146,10 @@ const ChartRoom = (props) => {
                     </select>
                 </div>
                 <textarea className="textarea" readOnly={true} value={allMassage}/>
-                <div>
+                <div className="outSideInput">
                     {/* <input className="nickName" type="text" onChange={nickNameChange} value={nickName} placeholder="請輸入暱稱"/> */}
-                    <div>
-                        <input className="textInput" type="text" onChange={inputOnChange} onKeyDown={enterSubmit} value={inputText}/>
-                        <input className='sendBtn' type="button" value="送出" onClick={()=>sendMessage('getMessageAll')}/>
-                    </div>
+                    <textarea className="textInput"  onChange={inputOnChange} onKeyDown={enterSubmit} value={inputText}/>
+                    <input className='sendBtn' type="button" value="←" onClick={()=>sendMessage('getMessageAll')}/>
                     {/* <input type="button" value="斷開蓮線" onClick={disConnectWebSocket}/> */}
                     {/* <input className='sendBtn' type="button" value="發送訊息給自己" onClick={()=>sendMessage('getMessage')}/> */}
                     {/* <input className='sendBtn' type="button" value="發送訊息給除了自己以外的所有人" onClick={()=>sendMessage('getMessageLess')}/> */}
