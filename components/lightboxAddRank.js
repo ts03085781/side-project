@@ -67,7 +67,6 @@ const LightboxAddRank = () => {
                     top: -6px;
                     right: 12px;
                     color: rgb(238, 74, 74);
-
                 }
                 .blackBackGround{
                     position: fixed;

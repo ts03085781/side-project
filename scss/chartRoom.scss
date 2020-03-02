@@ -11,11 +11,22 @@
     margin: 10px 0 0 0;
 }
 .nickName{
+    padding: 3px 0 0 5px;
     margin: 0 5px;
+    display: block;
 }
 .textInput{
     margin: 0 5px;
+    width: 80%;
 }
 .sendBtn{
+    font-weight: bold;
     margin: 0 5px;
+    color: #fff;
+    font-size: 16px;
+    background-color: #6495ed;
+    border: none;
+    border-radius: 18px;
+    width: 86px;
+    height: 36px;
 }

@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Layout from '../components/MyLayout';
 import fetch from 'isomorphic-unfetch'
 import React, { useState, useEffect, useRef } from 'react';
+import ChartRoomNameCheck from '../components/chartRoomNameCheck';
 import webSocket from 'socket.io-client';
 import '../scss/chartRoom.scss'
 
@@ -13,12 +14,19 @@ const ChartRoom = (props) => {
     const [nowRoom,setNowRoom] = useState('total')
     const [nickName, setNickName]= useState('')
     const [allMassage, setAllMassage] = useState('歡迎進入聊天室')
+    const [showLightBox,setShowLightBox] = useState(true)
     const prevAllMassageRef = useRef('')
     const Ws = useRef(null)
 
     useEffect(() => {
         //開啟連線至 server 端的 WS 的監聽窗口
         linkToWebSocket()
+        //從localStorage比對是否有登入過暱稱(niceName)
+        const HasLocalName = JSON.parse(localStorage.getItem('chartRoom'))
+        if(HasLocalName){
+            setNickName(HasLocalName.name)
+            setShowLightBox(false)
+        }
         //模擬 componentWillUnMount , return 後的 function 將會在組件卸載時被自動呼叫
         return disConnectWebSocket;
     }, [])
@@ -116,9 +124,9 @@ const ChartRoom = (props) => {
     }
 
     //暱稱欄位
-    const nickNameChange = (event) => {
-        setNickName(event.currentTarget.value) 
-    }
+    // const nickNameChange = (event) => {
+    //     setNickName(event.currentTarget.value) 
+    // }
 
     const disConnectWebSocket = () =>{
         //向 Server 送出申請中斷的訊息，讓它通知其他 Client
@@ -135,21 +143,24 @@ const ChartRoom = (props) => {
                 <h2>ChartRoom</h2>
                 <div>
                     <select onChange={changeRoom}>
-                        <option value='total'>全房間廣播</option>
-                        <option value='room1'>房間一</option>
-                        <option value='room2'>房間二</option>
-                        <option value='room3'>房間三</option>
+                        <option value='total'>世界頻</option>
+                        <option value='room1'>遊戲討論區</option>
+                        <option value='room2'>閒聊區</option>
+                        <option value='room3'>幹焦區</option>
                     </select>
                 </div>
                 <textarea className="textarea" readOnly={true} value={allMassage}/>
                 <div>
-                    <input className="nickName" type="text" onChange={nickNameChange} value={nickName} placeholder="請輸入暱稱"/>
-                    <input className="textInput" type="text" onChange={inputOnChange} onKeyDown={enterSubmit} value={inputText}/>
+                    {/* <input className="nickName" type="text" onChange={nickNameChange} value={nickName} placeholder="請輸入暱稱"/> */}
+                    <div>
+                        <input className="textInput" type="text" onChange={inputOnChange} onKeyDown={enterSubmit} value={inputText}/>
+                        <input className='sendBtn' type="button" value="送出" onClick={()=>sendMessage('getMessageAll')}/>
+                    </div>
+                    {/* <input type="button" value="斷開蓮線" onClick={disConnectWebSocket}/> */}
                     {/* <input className='sendBtn' type="button" value="發送訊息給自己" onClick={()=>sendMessage('getMessage')}/> */}
-                    <input className='sendBtn' type="button" value="發送訊息" onClick={()=>sendMessage('getMessageAll')}/>
                     {/* <input className='sendBtn' type="button" value="發送訊息給除了自己以外的所有人" onClick={()=>sendMessage('getMessageLess')}/> */}
-                    <input type="button" value="斷開蓮線" onClick={disConnectWebSocket}/>
                 </div>
+                {showLightBox && <ChartRoomNameCheck setShowLightBox={setShowLightBox} setNickName={setNickName}/>}
             </Layout>
         </div>
     );
