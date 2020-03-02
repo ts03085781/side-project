@@ -6,27 +6,46 @@
     -ms-user-select:none;
 }
 .textarea{
-    width: 95%;
+    width: calc(100% - 12px);
     height: 300px;
     margin: 10px 0 0 0;
+    resize:none;
+    border-radius: 8px;
+    padding: 5px;
 }
 .nickName{
     padding: 3px 0 0 5px;
     margin: 0 5px;
     display: block;
 }
+.outSideInput{
+    position: relative;
+    // padding-right: 72px;
+    // border-radius: 8px;
+    // border:1px solid rgb(160, 160, 160);
+    // height: 64px;
+}
 .textInput{
-    margin: 0 5px;
-    width: 80%;
+    width: calc(100% - 72px);
+    height: calc(100% - 12px) ;
+    border:none;
+    padding: 5px 65px 5px 5px;
+    resize:none;
+    border-radius: 8px;
+    border:1px solid rgb(160, 160, 160);
+    height: 64px;
 }
 .sendBtn{
     font-weight: bold;
-    margin: 0 5px;
     color: #fff;
-    font-size: 16px;
+    font-size: 25px;
     background-color: #6495ed;
     border: none;
-    border-radius: 18px;
-    width: 86px;
-    height: 36px;
+    border-radius: 16px;
+    width: 65px;
+    height: 54px;
+    position: absolute;
+    top: 11px;
+    right: 11px;
+    cursor: pointer;
 }
