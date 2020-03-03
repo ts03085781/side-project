@@ -3,7 +3,7 @@ const ip = '10.41.4.244' //後端伺服器的浮動ip位置
 
 const ChartRoomNameCheck = (props) => {
     const [Name,setName] = useState('')
-    const {setNickName, setShowLightBox} = props
+    const {setNickName, setShowLightBox, linkToWebSocket} = props
 
     const handleNickName = (event) =>{
         setName(event.currentTarget.value)
@@ -23,6 +23,8 @@ const ChartRoomNameCheck = (props) => {
             setShowLightBox(false)
             //改變父層nickName的狀態
             setNickName(Name)
+            //開啟父層的WS連線
+            linkToWebSocket(Name)
         }
     }
 

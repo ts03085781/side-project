@@ -140,7 +140,7 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('getMessageLess', message)
     })
 
-    socket.on('addRoom', room => {
+    socket.on('addRoom', (room, name) => {
         //加入前檢查是否已有所在房間
         const nowRoom = Object.keys(socket.rooms).find(room =>{
             return room !== socket.id
@@ -152,11 +152,11 @@ io.on('connection', (socket) => {
         }
 
         //.join 為非同步,如確認要在 .join 執行完後做事,請以 callback function 的形式寫在第二參數 
-        socket.join(room,()=>{console.log(`有人已加入${room}聊天室`, socket.rooms)})
+        socket.join(room,()=>{console.log(`『${name}』已加入${room}`, socket.rooms)})
         //(1)發送給在同一個 room 中除了自己外的 Client
-        socket.to(room).emit('addRoom', `已有新人加入${room}聊天室！`)
+        socket.to(room).emit('addRoom', `『${name}』已有新人加入${room}！`)
         //(2)發送給在 room 中所有的 Client
-        io.sockets.in(room).emit('addRoom', `已加入${room}聊天室！`)
+        io.sockets.in(room).emit('addRoom', `『${name}』已加入${room}！`)
     })
 
     socket.on('roomTalk', message => {
